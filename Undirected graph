@@ -1,0 +1,42 @@
+// undirected graph
+#include<iostream>
+#include<vector>
+using namespace std;
+int main()
+{
+    int n,m,q,u,v;
+    cin>>n>>m>>q;
+    vector<vector<int>> am(n+1,vector<int>(n+1,0)); // initialize a two dimensional matrix n+1*n+1 filled with 0
+    // vector<int> m(n+1)
+    //vector<vector<int>> am(n+1,m)
+    while(m--)
+    {
+        cin>>u>>v;
+        am[u][v]++;
+        am[v][u]++;
+    }
+    while(q--)
+    {
+        char query;
+        int count=0;
+        cin>>query;
+        switch(query)
+        {
+            case 'D':
+                cin>>u;
+                for(auto i:am[u]){
+                    count+=i;
+                }
+                cout<<count<<endl;
+                break;
+            case 'N':
+                cin>>u>>v;
+                if(am[u][v]==1) cout<<"Y"<<endl;
+                else
+                    cout<<"N"<<endl;
+                break;
+            default:
+                break;
+        }
+    }
+}
