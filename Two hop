@@ -1,0 +1,42 @@
+#include <iostream>
+#include<vector>
+int t,n,m,q;
+int u,v;
+using namespace std;
+int two_hop(vector<vector<int>> &um, int u, int v, int n)
+{
+    for(int i=0; i<=n; i++)
+    {
+        if(i!=u&&i!=v)
+        {
+            if(um[i][u]==1&&um[i][v]==1)
+                return 1;
+        }
+    }
+    return 0;
+}
+int main()
+{
+    cin>>t;
+    while(t--)
+    {
+        cin>>n>>m>>q;
+        vector<vector<int>> um(n+1,vector<int>(n+1,0));
+        while(m--)
+        {
+            cin>>u>>v;
+            um[u][v]++;
+            um[v][u]++;
+        }
+        while(q--)
+        {
+            cin>>u>>v;
+            if (two_hop(um,u,v,n))
+            {
+                cout<<"Y"<<endl;
+            }else
+                cout<<"N"<<endl;
+        }
+        
+    }
+}
