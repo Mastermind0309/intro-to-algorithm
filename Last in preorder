@@ -1,0 +1,31 @@
+#include <iostream>
+#include <queue>
+#include <vector>
+using namespace std;
+
+void dfs(int  index, vector<pair<int,int>>& T, int &ans)
+{
+    ans=index;
+    if(T[index].first!=-1) dfs(T[index].first, T, ans);
+    if(T[index].second!=-1) dfs(T[index].second, T, ans);
+}
+int main()
+{
+    long long  n;
+    cin>>n;
+    vector<pair<int,int>> T(n+1, pair<int, int>(-1,-1));
+    long long root = n*(n+1)/2;
+    int ans;
+    for (int i=1; i<=n; i++)
+    {
+        int l,r;
+        cin>>l>>r;
+        if(l!=-1){T[i].first=l; root-=l; }
+        if(r!=-1){T[i].second=r; root-=r;}
+        
+    }
+    dfs(root, T, ans);
+    cout<<ans<<endl;
+    
+    
+}
