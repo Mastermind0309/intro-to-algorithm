@@ -1,0 +1,86 @@
+#include <iostream>
+#include <queue>
+#include <vector>
+#include<set>
+#include<unordered_map>
+using namespace std;
+int preidx=0;
+class node
+{
+public:
+    string s;
+    node *left, *right;
+    node(): s(), left(), right() {};
+};
+vector<string> check;
+node* buildtree(vector<string> &pre, unordered_map<string, int> &map, int l, int r)
+{
+    if(l>r) return nullptr;
+    node* tmp= new node();
+    tmp->s = pre[preidx++];
+    int idx= map[tmp->s];
+    if(idx<l||idx>r) return nullptr;
+    tmp->left= buildtree( pre, map, l, idx-1);
+    tmp->right = buildtree( pre, map, idx+1, r);
+    return tmp;
+}
+void trav_postorder( node* root)
+{
+    if(root==nullptr) return;
+    trav_postorder(root->left);
+    trav_postorder(root->right);
+    check.push_back(root->s);
+}
+void checkans(vector<string>& post, int n)
+{
+    int cnt=0, x=check.size();
+    if(x!=n)
+    {
+        cout<<"no\n";
+    }
+    else
+    {
+        for(int i=0; i<x; i++)
+        {
+            if(check[i]!=post[i]){
+                cout<<"no\n";
+                return;
+            }
+        }
+         cout<<"yes\n";
+    }
+    
+}
+
+int main()
+{
+    int t,n;
+    cin>>t;
+    while(t--)
+    {
+        cin>>n;
+        preidx=0;
+        check.clear();
+        vector<string> pre(n), post(n);
+        unordered_map<string, int> map;
+        for(int i=0; i<n; i++)
+        {
+            cin>>pre[i];
+        }
+        for(int i=0; i<n; i++)
+        {
+            string tmp;
+            cin>>tmp;
+            map[tmp]=i;
+        }
+        for(int i=0; i<n; i++)
+        {
+            cin>>post[i];
+        }
+        
+        node *root= buildtree(pre, map,0,n-1);
+        trav_postorder(root);
+        checkans(post,n);
+        
+    }
+}
