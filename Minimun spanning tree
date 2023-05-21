@@ -1,0 +1,74 @@
+#include <iostream>
+#include <queue>
+#include <vector>
+#include<set>
+#include<unordered_map>
+#include<string>
+#include<map>
+#include<algorithm>
+using namespace std;
+struct edges{
+    int u;
+    int v;
+    long long  w;
+};
+
+vector<int> parent;
+
+bool compare(const edges& e1, const edges& e2)
+{
+    return e1.w  < e2.w;
+}
+int findparent(int node)
+{
+    if(parent[node]==node) return node;
+    return parent[node]= findparent(parent[node]);
+    
+}
+void unite(int u, int v)
+{
+    int parentu= findparent(u);
+    int parentv = findparent(v);
+    parent[parentu]= parentv;
+}
+
+
+long long buildgraph( vector<edges> &edge, int n)
+{
+    sort(edge.begin(), edge.end(), compare);
+    parent.resize(n+1);
+    for(int i=1; i<=n; i++)
+    {
+        parent[i]=i;
+        
+    }
+    long long total=0;
+    for (const auto& i : edge)
+    {
+        int u= i.u;
+        int v= i.v;
+        long long w= i.w;
+        
+        if(findparent(u)!=findparent(v))
+        {
+            total+=w;
+            unite(u,v);
+        }
+        
+    }
+    return total;
+}
+
+int main()
+{
+    int n,m;
+    cin>>n>>m;
+    vector<edges> edge(m);
+    for(int i=0 ;i<m;i++)
+    {
+        cin>>edge[i].u>>edge[i].v>>edge[i].w;
+    }
+    long long total= buildgraph(edge, n);
+    cout<< total<<endl;
+    
+}
